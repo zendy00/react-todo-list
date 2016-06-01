@@ -37,12 +37,40 @@ let actions = {
     }
   },
 
+  requestUserInfo: function() {
+    return {
+      type: 'REQUEST_USER_INFO'
+    };
+  },
+
+  receiveUserInfo: function(info) {
+    return {
+      type: 'RECEIVE_USER_INFO',
+      userInfo : info
+    }
+  },
+
   createNewUserIdAsync: function() {
     return (dispatch) => {
-      setTimeout(() => {
-        dispatch(actions.createNewUserId())
-      }, 2500)
+
+      dispatch(actions.requestUserInfo());
+
+      setTimeOut(() => {
+        return fetch('//localhost:64325/')
+        	.then(function(response) {
+        		if (response.status >= 400) {
+        			throw new Error("Bad response from server");
+        		}
+        		return response.json();
+        	})
+
+        	.then(function(userInfo) {
+        		dispatch(actions.receiveUserInfo(userInfo))
+        	})
+      }, 2000)
+
     }
+
   }
 
 }
