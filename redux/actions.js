@@ -55,7 +55,7 @@ let actions = {
 
       dispatch(actions.requestUserInfo());
 
-      setTimeOut(() => {
+      setTimeout(() => {
         return fetch('//localhost:64325/')
         	.then(function(response) {
         		if (response.status >= 400) {
